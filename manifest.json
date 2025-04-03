@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "AI Studio Helper",
+  "version": "1.0",
+  "description": "A Chrome extension for AI Studio",
+  "permissions": ["scripting"],
+  "host_permissions": [
+    "https://aistudio.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://aistudio.google.com/*"],
+      "js": ["utils.js", "content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+} 

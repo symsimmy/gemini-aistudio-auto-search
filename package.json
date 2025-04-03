@@ -1,0 +1,11 @@
+{
+  "name": "aistudio-helper-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension for AI Studio",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "archiver": "^5.3.1"
+  }
+} 
