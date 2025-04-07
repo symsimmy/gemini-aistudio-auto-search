@@ -11,11 +11,9 @@
 <a href="https://opensource.org/license/apache-2-0"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License: Apache"></a>
 </p>
 
-## 演示视频
-
-<video src="../videos/demo.mp4" controls>
-  您的浏览器不支持 HTML 视频。
-</video>
+<p align="center">
+<a href="https://youtu.be/qQnlYXmDxMI"><img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="youtube"></a>
+</p>
 
 ## 插件 UI
 
