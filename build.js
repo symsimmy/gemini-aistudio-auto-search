@@ -40,6 +40,7 @@ archive.pipe(output);
 archive.file('manifest.json', { name: 'manifest.json' });
 archive.file('content.js', { name: 'content.js' });
 archive.file('background.js', { name: 'background.js' });
+archive.file('utils.js', { name: 'utils.js' });
 
 // 完成打包
 archive.finalize(); 

@@ -3,20 +3,6 @@ console.log('Content script has been injected');
 function initializeExtension() {
     console.log('Initializing extension...');
 
-    // 创建一个函数来设置按钮的事件监听器
-    function setupButtonListener(button) {
-        if (!button) {
-            console.log('Button is null or undefined');
-            return;
-        }
-        console.log('Setting up click listener for button:', button);
-        button.addEventListener('click', function () {
-            console.log('Button clicked');
-            // 使用 utils.js 中定义的 showToast 函数
-            window.showToast('Hello World');
-        });
-    }
-
     function findAndSetupButton() {
         const searchToolElement = document.querySelector('div[data-test-id="searchAsAToolTooltip"]');
         if (searchToolElement) {
@@ -26,9 +12,7 @@ function initializeExtension() {
             const slideToggleElement = searchToolElement.querySelector('mat-slide-toggle');
             if (slideToggleElement) {
                 console.log('Slide toggle element found,id:', slideToggleElement.id);
-            }
-
-            const slideToggleButton = slideToggleElement.querySelector('button[role="switch"]');
+            }       
 
             const footerElement = document.querySelector('footer[class="ng-star-inserted"]');
             if (footerElement) {
@@ -38,17 +22,13 @@ function initializeExtension() {
                 searchElement.id = 'web-search-element';
 
                 const searchButton = searchElement.querySelector('button[mat-ripple-loader-class-name="mat-mdc-button-ripple"]');
-
                 searchButton.classList.remove('mat-mdc-button-disabled');
-
                 const attributesToRemove = [
                     'mat-mdc-button-disabled',
                     'mat-ripple-loader-uninitialized',
                     'mat-ripple-loader-disabled',
-                    'disabled' // 注意：只需属性名
+                    'disabled'
                 ];
-
-                // mat-mdc-button-persistent-ripple mdc-icon-button__ripple
 
                 attributesToRemove.forEach(attr => {
                     searchButton.removeAttribute(attr);
@@ -57,15 +37,11 @@ function initializeExtension() {
                 footerElement.appendChild(searchElement);
 
                 const imgElement = document.createElement('img');
-
-                // 2. 设置 src 属性
                 imgElement.src = 'https://www.gstatic.com/images/branding/productlogos/googleg/v6/24px.svg';
-                // 或者使用 setAttribute:
-                // imgElement.setAttribute('src', 'https://www.gstatic.com/images/branding/productlogos/googleg/v6/24px.svg');
-
-                // 3. 设置 alt 属性
                 imgElement.alt = 'Google logo';
 
+
+                const slideToggleButton = slideToggleElement.querySelector('button[role="switch"]');    
                 if (slideToggleButton.getAttribute('aria-checked') === 'true') {
                     imgElement.style.filter = 'none';
                 }
@@ -78,7 +54,7 @@ function initializeExtension() {
 
                 const button = document.getElementById(slideToggleElement.id).querySelector('button');
                 button.addEventListener('click', function () {
-                    // 等 10ms
+                    // 等 10ms,确保js方法正确执行了
                     setTimeout(() => {
                         console.log('click ischecked:', slideToggleButton.getAttribute('aria-checked'));
                         if (slideToggleButton.getAttribute('aria-checked') === 'true') {
@@ -116,28 +92,29 @@ function initializeExtension() {
     console.log('Button not found initially, setting up MutationObserver...');
 
     const observer = new MutationObserver((mutations, obs) => {
-        // console.log('DOM mutation detected, checking for button...');
-
-        // // 记录每次变化的详细信息
-        // mutations.forEach(mutation => {
-        //     console.log('Mutation type:', mutation.type);
-        //     if (mutation.addedNodes.length > 0) {
-        //         console.log('Nodes added:', mutation.addedNodes.length);
-        //     }
-        // });
-
-        if (findAndSetupButton()) {
-            console.log('Button found after DOM mutation, disconnecting observer');
-            obs.disconnect();
+        // 检查是否已存在我们添加的搜索元素
+        const existingSearchElement = document.getElementById('web-search-element');
+        if (existingSearchElement) {
+            // 如果元素已存在但父元素不在 DOM 中，说明页面已更新，需要移除旧元素
+            if (!document.body.contains(existingSearchElement)) {
+                existingSearchElement.remove();
+            } else {
+                // 元素存在且在 DOM 中，无需处理
+                return;
+            }
         }
+
+        // 尝试查找和设置按钮
+        findAndSetupButton();
+        // 注意：这里不再调用 obs.disconnect()
     });
 
     // 配置观察器
     console.log('Starting MutationObserver...');
-    observer.observe(document, { // 改为观察整个 document
+    observer.observe(document, {
         childList: true,
         subtree: true,
-        attributes: true, // 也观察属性变化
+        attributes: true,
     });
 }
 
