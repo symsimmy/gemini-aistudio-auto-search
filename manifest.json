@@ -1,8 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "AI Studio Helper",
+  "name": "Gemini AI Studio Auto Search Enabler",
   "version": "1.0",
-  "description": "A Chrome extension for AI Studio",
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "description": "Automatically enables Grounding with Google Search in Google AI Studio. Get up-to-date AI answers without the clicks!",
   "permissions": ["scripting"],
   "host_permissions": [
     "https://aistudio.google.com/*"

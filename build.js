@@ -42,5 +42,8 @@ archive.file('content.js', { name: 'content.js' });
 archive.file('background.js', { name: 'background.js' });
 archive.file('utils.js', { name: 'utils.js' });
 
+// 添加 icons 目录
+archive.directory('icons', 'icons');
+
 // 完成打包
 archive.finalize(); 
