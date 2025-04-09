@@ -9,7 +9,10 @@ if (!fs.existsSync(distDir)) {
 }
 
 // 创建一个文件来写入
-const output = fs.createWriteStream(path.join(distDir, 'extension.zip'));
+//文件名格式为:gemini-aistudio-auto-search-{version}.zip
+// version 为 manifest.json 中的 version    
+const version = require('./manifest.json').version;
+const output = fs.createWriteStream(path.join(distDir, `gemini-aistudio-auto-search-${version}.zip`));
 const archive = archiver('zip', {
     zlib: { level: 9 } // 设置最大压缩级别
 });
