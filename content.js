@@ -1,46 +1,38 @@
 console.log('Content script has been injected');
 
-function findAndSetupSlideToggle() {
-    console.log('findAndSetupSlideToggle');
-    const searchToolElement = document.querySelector('div[data-test-id="searchAsAToolTooltip"]');
+function findAndSetupButton(id,name,async=false) {
+    const searchToolElement = document.querySelector(`div[data-test-id="${id}"]`);
     if (searchToolElement) {
-        const slideToggleElement = searchToolElement.querySelector('mat-slide-toggle');
-        const slideToggleButton = slideToggleElement.querySelector('button[role="switch"]');
-        const button = document.getElementById(slideToggleElement.id).querySelector('button');
-        setTimeout(() => {
-            if (slideToggleButton.getAttribute('aria-checked') === 'false') {
-                console.log('double check: web search disabled,click to enable');
-                button.click();
-            }
-        }, 20);
-
-    }
-}
-
-function findAndSetupSearchButton() {
-    const searchToolElement = document.querySelector('div[data-test-id="searchAsAToolTooltip"]');
-    if (searchToolElement) {
-        console.log('Search tool element found');
+        console.log(`${name} tool element found`);
         const slideToggleElement = searchToolElement.querySelector('mat-slide-toggle');
         if (slideToggleElement) {
-            console.log('Slide toggle element found,id:', slideToggleElement.id);
+            console.log(`${name} toggle element found,id:${slideToggleElement.id}`, );
         }
 
         const slideToggleButton = slideToggleElement.querySelector('button[role="switch"]');
         const button = document.getElementById(slideToggleElement.id).querySelector('button');
 
-        if (slideToggleButton.getAttribute('aria-checked') === 'false') {
-            console.log('web search disabled,click to enable');
-            button.click();
+        if(async){
+            setTimeout(()=>{
+                if (slideToggleButton.getAttribute('aria-checked') === 'false') {
+                    console.log(`${name} disabled,click to enable`);
+                    button.click();
+                }
+            },20);
+        }else{
+            if (slideToggleButton.getAttribute('aria-checked') === 'true') {
+                console.log(`${name} enabled,click to disable`);
+                button.click();
+            }
         }
         return true;
     }
     return false;
 }
 
-
-function findAndSetupButton() {
-    return findAndSetupSearchButton();
+function findAndSetupAllButton(async=false) {
+    return findAndSetupButton('searchAsAToolTooltip','web search',async) 
+        && findAndSetupButton('browseAsAToolTooltip','url context',async); 
 }
 
 function initializeExtension() {
@@ -63,7 +55,7 @@ function initializeExtension() {
                 existingSearchElement.remove();
             } else {
                 // console.log('existingSearchElement in DOM, return');
-                findAndSetupSlideToggle();
+                findAndSetupAllButton(true);
                 return;
             }
         }
@@ -89,4 +81,4 @@ if (document.readyState === 'loading') {
 } else {
     console.log('Document already loaded, initializing immediately');
     initializeExtension();
-} 
+}
